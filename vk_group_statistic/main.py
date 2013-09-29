@@ -36,13 +36,13 @@ def return_nf(word):
         return word
 
 
-def seporate_by(lst, by):
-    """ [1, 2, 3, 4] by 2 -> [[1, 2], [3, 4]]
-    """
-    if len(lst) % by != 0:
-        raise TypeError("Invalid list length")
-    len_sublist = len(lst) / by
-    return [lst[x:x + len_sublist] for x in range(0, len(lst), len_sublist)]
+# def seporate_by(lst, by):
+#     """ [1, 2, 3, 4] by 2 -> [[1, 2], [3, 4]]
+#     """
+#     if len(lst) % by != 0:
+#         raise TypeError("Invalid list length")
+#     len_sublist = len(lst) / by
+#     return [lst[x:x + len_sublist] for x in range(0, len(lst), len_sublist)]
 
 
 def parse_vk_club(id):
@@ -90,7 +90,7 @@ if __name__ == "__main__":
             words, count_user_in_group = rez
             word_counter.update(words)
             people_count_list.append(count_user_in_group)
-            lst = sorted([(v, k) for k, v in word_counter.iteritems()], lambda x, y: y[0] - x[0])
+            lst = word_counter.most_common()#sorted([(v, k) for k, v in word_counter.iteritems()], lambda x, y: y[0] - x[0])
             print(u', '.join([u"{0:d} - {1:s}".format(x[0], x[1]) for x in lst]))
         else:
             print('Invalid Group')
@@ -98,12 +98,12 @@ if __name__ == "__main__":
     print("\n === FINALL === \n")
     people_count_list.sort()
 
-    data1 = map(max, seporate_by(people_count_list, 10))
+    #data1 = map(max, seporate_by(people_count_list, 10))
+    interval = len(people_count_list) / 10
+    data1 = [lst[x+interval-1] for x in range(0, len(lst), interval)]
 
-    z = 1
-    for x in data1:
-        print("In {0}% -- count of people < {1}".format(10 * z, x))
-        z += 1
+    for z in range(len(data1)):
+        print("In {0}% -- count of people < {1}".format(10 * (z+1), x[x]))
 
     print("Words stats top-100 : ")
     lst = sorted([(v, k) for k, v in word_counter.iteritems()], lambda x, y: y[0] - x[0])
