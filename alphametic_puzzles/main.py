@@ -8,9 +8,9 @@ __author__ = 'pahaz'
 if __name__ == "__main__":
     while True:
         puzzle = raw_input("puzzle> ")
+        puzzle = re.sub(r'\s', '', puzzle).replace('=', '==')
         if not puzzle: break
 
-        puzzle = re.sub(r'\s', '', puzzle).replace('=', '==')
         variables = set(puzzle) - set("=-+*")
         invalid_replaces_for_zero = set(re.findall(r'\b(\w)', puzzle))
 
