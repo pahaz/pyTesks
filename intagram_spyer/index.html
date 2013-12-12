@@ -1,0 +1,48 @@
+<html>
+<head>
+    <script src="http://api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU"
+            type="text/javascript"></script>
+    <style>
+        .imgs {
+            height: 150px;
+            margin: 3px;
+        }
+    </style>
+</head>
+<body>
+<div id="map" style="width: 500px; height: 306px; float: left; margin: 3px"></div>
+<script type="text/javascript">
+    ymaps.ready(init);
+    var myMap;
+
+    function init() {
+        myMap = new ymaps.Map("map", {
+            center: [55.76, 37.64],
+            zoom: 1
+        });
+
+        myMap.controls.add('zoomControl');
+        myMap.events.add('click', function (e) {
+            console.log(e);
+            console.log(e.get('coordPosition'));
+            var lat = e.get('coordPosition')[0];
+            var lng = e.get('coordPosition')[1];
+            jQuery.get('/inst/' + lat + '/' + lng + '/', function (data) {
+                $('.imgs').remove();
+                var $imgs = $('body');
+
+                console.log(data);
+
+                $.each(data.data, function (index, obj) {
+                    var html = "<img class='imgs' src='" + obj.images.low_resolution.url + "'>";
+                    $imgs.append(html);
+                    console.log(obj.images.low_resolution.url);
+                })
+            });
+            myMap.balloon.open(e.get('coordPosition'), 'Щелк!');
+        })
+    }
+</script>
+<script src="http://code.jquery.com/jquery-1.10.2.min.js" type="text/javascript"></script>
+</body>
+</html>
